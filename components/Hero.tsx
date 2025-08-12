@@ -10,7 +10,7 @@ const container: Variants = {
 		opacity: 1,
 		transition: {
 			staggerChildren: 0.1,
-			delayChildren: 0.3,
+			delayChildren: 0.4,
 		},
 	},
 };
@@ -22,7 +22,7 @@ const item: Variants = {
 		y: 0,
 		transition: {
 			duration: 0.5,
-			ease: [0.1, 1, 0.2, 1],
+			ease: [0.16, 0.5, 0.4, 0.5],
 		},
 	},
 };
