@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+}
+
+/* small helpers to mimic screenshot rounded containers */
+.card {
+	border-radius: 16px;
+	box-shadow: 0 8px 30px rgba(10, 20, 30, 0.06);
+}
+
+.header {
+	z-index: 50 !important;
+	margin-top: 50px;
+}
+
+.hero {
+	background-image: url("/images/bg.png");
+	background-size: cover;
+	background-position: center;
+	margin-top: -20px;
+}
