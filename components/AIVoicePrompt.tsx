@@ -1,10 +1,39 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import { useSpeechSynthesis } from "react-speech-kit";
+import { useCallback, useEffect, useRef, useState } from "react";
 import EarlyAccessForm from "./EarlyAccessForm";
 import Modal from "./Modal";
+
+// ✅ Custom hook for native speech synthesis
+function useSpeechSynthesisNative() {
+	const synthRef = useRef<SpeechSynthesis | null>(null);
+	const [speaking, setSpeaking] = useState(false);
+
+	useEffect(() => {
+		if (typeof window !== "undefined" && "speechSynthesis" in window) {
+			synthRef.current = window.speechSynthesis;
+		}
+	}, []);
+
+	const speak = useCallback((text: string) => {
+		if (!synthRef.current) return;
+		synthRef.current.cancel();
+		const utterance = new SpeechSynthesisUtterance(text);
+		utterance.onstart = () => setSpeaking(true);
+		utterance.onend = () => setSpeaking(false);
+		synthRef.current.speak(utterance);
+	}, []);
+
+	const cancel = useCallback(() => {
+		if (synthRef.current) {
+			synthRef.current.cancel();
+			setSpeaking(false);
+		}
+	}, []);
+
+	return { speak, cancel, speaking };
+}
 
 const MoodSelector = ({
 	onSelect,
@@ -22,16 +51,13 @@ const MoodSelector = ({
 
 	return (
 		<div className="fixed bottom-8 right-8 flex flex-col items-end gap-2 z-50">
-			{/* Chat bubble */}
 			<motion.div
 				initial={{ opacity: 0, y: 20, scale: 0.9 }}
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				exit={{ opacity: 0, scale: 0.9 }}
 				transition={{ type: "spring", damping: 20 }}
 				className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 max-w-sm relative">
-				{/* Chat bubble pointer */}
 				<div className="absolute -bottom-2 right-6 w-4 h-4 bg-white transform rotate-45 border-r border-b border-gray-200"></div>
-
 				<div className="flex justify-between items-center mb-4">
 					<h3 className="text-lg font-medium">How are you feeling today?</h3>
 					<button
@@ -55,7 +81,6 @@ const MoodSelector = ({
 				</div>
 			</motion.div>
 
-			{/* AI Chat icon */}
 			<motion.div
 				whileHover={{ scale: 1.1 }}
 				whileTap={{ scale: 0.95 }}
@@ -79,12 +104,13 @@ const AIResponse = ({
 	response: string;
 	onClose: () => void;
 }) => {
-	const { speak, cancel } = useSpeechSynthesis();
+	const { speak, cancel } = useSpeechSynthesisNative();
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
-		speak({ text: response });
-	}, [response, speak]);
+		speak(response);
+		return () => cancel();
+	}, [response, speak, cancel]);
 
 	return (
 		<>
@@ -108,11 +134,12 @@ const AIResponse = ({
 			<Modal
 				isOpen={open}
 				onClose={() => {
+					cancel();
 					setOpen(false);
 					onClose();
 				}}>
 				<EarlyAccessForm />
-			</Modal>{" "}
+			</Modal>
 		</>
 	);
 };
@@ -120,7 +147,7 @@ const AIResponse = ({
 export const AIVoicePrompt = () => {
 	const [showPrompt, setShowPrompt] = useState(false);
 	const [selectedMood, setSelectedMood] = useState<string | null>(null);
-	const { speak, speaking, cancel } = useSpeechSynthesis();
+	const { speak, speaking, cancel } = useSpeechSynthesisNative();
 	const hasSpoken = useRef(false);
 	const scrollTriggered = useRef(false);
 
@@ -141,10 +168,9 @@ export const AIVoicePrompt = () => {
 				scrollTriggered.current = true;
 				setShowPrompt(true);
 
-				// Cancel any existing speech and speak only if not already spoken
 				cancel();
 				if (!hasSpoken.current) {
-					speak({ text: "Hi there! How are you feeling today?" });
+					speak("Hi there! How are you feeling today?");
 					hasSpoken.current = true;
 				}
 			}
@@ -153,36 +179,21 @@ export const AIVoicePrompt = () => {
 		window.addEventListener("scroll", handleScroll);
 		return () => {
 			window.removeEventListener("scroll", handleScroll);
-			cancel(); // Clean up speech on unmount
+			cancel();
 		};
 	}, [speak, cancel]);
 
 	const handleMoodSelect = (mood: string) => {
 		setSelectedMood(mood);
 		setShowPrompt(false);
-		cancel(); // Cancel any ongoing speech
+		cancel();
 	};
 
 	const handleClose = () => {
 		setShowPrompt(false);
 		setSelectedMood(null);
-		cancel(); // Cancel any ongoing speech
+		cancel();
 	};
-
-	{
-		speaking && (
-			<div className="absolute top-2 right-2 animate-pulse">
-				<svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-					<path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-					<path
-						fillRule="evenodd"
-						d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
-						clipRule="evenodd"
-					/>
-				</svg>
-			</div>
-		);
-	}
 
 	return (
 		<AnimatePresence>
@@ -194,6 +205,18 @@ export const AIVoicePrompt = () => {
 					response={responses[selectedMood as keyof typeof responses]}
 					onClose={handleClose}
 				/>
+			)}
+			{speaking && (
+				<div className="absolute top-2 right-2 animate-pulse">
+					<svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+						<path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+						<path
+							fillRule="evenodd"
+							d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+							clipRule="evenodd"
+						/>
+					</svg>
+				</div>
 			)}
 		</AnimatePresence>
 	);
