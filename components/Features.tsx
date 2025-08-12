@@ -9,21 +9,15 @@ const FeatureCard: React.FC<{
 }> = ({ title, description, img, className = "" }) => {
 	return (
 		<div
-			className={`bg-white p-6 rounded-lg shadow-md border border-gray-200 w-full ${className}`}>
+			className={`bg-white p-6 rounded-lg shadow-md border border-gray-200 w-full flex flex-col ${className}`}>
 			<div className="flex items-center mb-4">
 				<h3 className="text-xl font-normal font-sequel text-[#161616]">
 					{title}
 				</h3>
 			</div>
 			<p className="text-[#6C7278] mb-4">{description}</p>
-			<div className="w-full h-full">
-				<Image
-					src={img}
-					alt="Feature Image"
-					width={600}
-					height={300}
-					className="w-full h-auto object-contain"
-				/>
+			<div className="w-full flex-1 relative min-h-[200px]">
+				<Image src={img} alt="Feature Image" fill className="object-contain" />
 			</div>
 		</div>
 	);
@@ -50,38 +44,38 @@ const FeaturesGrid: React.FC = () => {
 							title="AI-Powered Health Vault"
 							description="Securely store and manage all your medical records in one place."
 							img="/images/vault.png"
-							className="h-full md:h-[510px]"
+							className="h-full min-h-[400px] md:h-[510px]"
 						/>
 						<FeatureCard
 							title="Intelligent Symptom Checker"
 							description="Get instant insights into your symptoms and potential conditions."
 							img="/images/symptoms.png"
-							className="h-full md:h-[510px]"
+							className="h-full min-h-[400px] md:h-[510px]"
 						/>
 						<FeatureCard
 							title="Smart Medication Tracker"
 							description="Never miss a dose with timely reminders and medication logs."
 							img="/images/chat.png"
-							className="h-full md:h-[510px]"
+							className="h-full min-h-[400px] md:h-[510px]"
 						/>
 					</div>
 
 					{/* Second row - shorter cards */}
 					<div className="flex flex-col sm:flex-row gap-3 w-full">
-						<div className=" w-full sm:w-[66.5%]">
+						<div className="w-full sm:w-[66.5%]">
 							<FeatureCard
 								title="Specialist Connection"
 								description="Connect with top healthcare specialists when you need them."
 								img="/images/specialist.png"
-								className="h-full md:h-[300px]"
+								className="h-full min-h-[280px] md:h-[350px]"
 							/>
 						</div>
-						<div className=" w-full sm:w-[32.5%]">
+						<div className="w-full sm:w-[32.5%]">
 							<FeatureCard
 								title="Health Insights"
 								description="Get personalized health recommendations based on your data."
 								img="/images/health.png"
-								className="h-full md:h-[300px]"
+								className="h-full min-h-[280px] md:h-[350px]"
 							/>
 						</div>
 					</div>
