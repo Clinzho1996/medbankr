@@ -1,6 +1,7 @@
 import { motion, Variants } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
+import { AIVoicePrompt } from "./AIVoicePrompt";
 import EarlyAccessForm from "./EarlyAccessForm";
 import Modal from "./Modal";
 
@@ -39,6 +40,7 @@ const Hero: React.FC<{ openModal?: () => void }> = ({ openModal }) => {
 			<Modal isOpen={open} onClose={() => setOpen(false)}>
 				<EarlyAccessForm />
 			</Modal>
+			<AIVoicePrompt />
 
 			{/* Waiting users badge */}
 			<motion.div
