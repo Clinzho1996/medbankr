@@ -1,17 +1,31 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+
+type FormData = {
+	name: string;
+	email: string;
+	phone: string;
+	location: string;
+};
 
 export default function EarlyAccessForm() {
-	const [data, setData] = useState({
+	const [data, setData] = useState<FormData>({
 		name: "",
 		email: "",
 		phone: "",
 		location: "",
 	});
-	const handle = (e: any) =>
-		setData({ ...data, [e.target.name]: e.target.value });
-	const submit = (e: any) => {
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setData((prev) => ({
+			...prev,
+			[name]: value,
+		}));
+	};
+
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		alert("submitted (dummy)");
 	};
@@ -20,7 +34,7 @@ export default function EarlyAccessForm() {
 		<div className="p-4 bg-white">
 			<div className="rounded-xl p-4 bg-[#EFF1F5] w-full text-center border border-[#E2E4E9]">
 				<div className="bg-white p-6 rounded-lg">
-					<div className="mx-auto ">
+					<div className="mx-auto">
 						<Image
 							src="/images/popup.png"
 							alt="avatars"
@@ -35,12 +49,12 @@ export default function EarlyAccessForm() {
 					<p className="text-[#6C7278] text-sm mb-4">
 						Get 6 months premium FREE + exclusive founding member benefits
 					</p>
-					<form onSubmit={submit} className="space-y-3 text-left">
+					<form onSubmit={handleSubmit} className="space-y-3 text-left">
 						<label className="text-sm text-gray-600">Full Name</label>
 						<input
 							name="name"
 							value={data.name}
-							onChange={handle}
+							onChange={handleChange}
 							className="w-full rounded-lg px-3 py-2 bg-[#F4F6F8] shadow-inner shadow-[#0000000D] text-sm mt-2"
 							placeholder="Williams Ayedungbe"
 						/>
@@ -49,7 +63,7 @@ export default function EarlyAccessForm() {
 						<input
 							name="email"
 							value={data.email}
-							onChange={handle}
+							onChange={handleChange}
 							className="w-full rounded-lg px-3 py-2 bg-[#F4F6F8] shadow-inner shadow-[#0000000D] text-sm mt-2"
 							placeholder="williams@medbankr.com"
 						/>
@@ -58,7 +72,7 @@ export default function EarlyAccessForm() {
 						<input
 							name="phone"
 							value={data.phone}
-							onChange={handle}
+							onChange={handleChange}
 							className="w-full rounded-lg px-3 py-2 bg-[#F4F6F8] shadow-inner shadow-[#0000000D] text-sm mt-2"
 							placeholder="Enter phone number"
 						/>
@@ -67,7 +81,7 @@ export default function EarlyAccessForm() {
 						<input
 							name="location"
 							value={data.location}
-							onChange={handle}
+							onChange={handleChange}
 							className="w-full rounded-lg px-3 py-2 bg-[#F4F6F8] shadow-inner shadow-[#0000000D] text-sm mt-2"
 							placeholder="Enter location"
 						/>
