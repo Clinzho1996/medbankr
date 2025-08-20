@@ -43,8 +43,7 @@ const FeaturesGrid: React.FC = () => {
 						Medbankr – Your Smarter Health Companion
 					</h2>
 					<p className="text-gray-600">
-						Lorem ipsum dolor sit amet consectetur. Amet metus vehicula enim at
-						aliquet lacus mauris vitae semper.
+						What we offer:
 					</p>
 				</motion.div>
 
