@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
 					alt="Description of image"
 					width={1920}
 					height={300}
-					className="object-cover opacity-0 sm:opacity-10 w-full h-full"
+					className="object-cover opacity-10 sm:opacity-10 w-full h-full"
 					objectFit="cover"
 				/>
 				<div className="mt-8 text-center text-gray-400 flex flex-col sm:flex-row justify-between items-center">

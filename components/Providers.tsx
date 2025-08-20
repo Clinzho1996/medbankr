@@ -45,7 +45,7 @@ const ProviderSection: React.FC = () => {
 							<h3 className="sm:text-[32px] text-[24px] text-white font-sequel font-normal mb-2">
 								Join Nigeria&apos;s Most Trusted Health Network
 							</h3>
-							<p className="text-white mb-6 text-sm pr-10 sm:pr-20">
+							<p className="text-white mb-6 text-sm pr-0 sm:pr-20">
 								The Specialist Provider form is different from the User Waitlist
 								form. The Provider form is specifically for specialists,
 								hospitals, and diagnostic labs, while the Waitlist form is for

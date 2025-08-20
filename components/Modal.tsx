@@ -23,8 +23,7 @@ export default function Modal({
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 					transition={{ duration: 0.2 }}
-					onClick={onClose} // Close when clicking the backdrop
-				>
+					onClick={onClose}>
 					<motion.div
 						className="bg-white rounded-2xl w-full max-w-md shadow-lg relative flex flex-col mx-4" // Added flex-col
 						initial={{ opacity: 0, scale: 0.95 }}
