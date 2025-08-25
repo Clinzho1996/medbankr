@@ -3,7 +3,7 @@ import {
 	IconBrandFacebook,
 	IconBrandInstagram,
 	IconBrandLinkedin,
-	IconBrandTelegram,
+	IconBrandTiktok,
 	IconBrandX,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
@@ -25,9 +25,9 @@ const Footer: React.FC = () => {
 					<p className="mb-1">Questions?</p>
 					<p className="font-bold font-sequel text-[#303030]">
 						<a href="mailto:hello@medbankr.com" className="hover:underline">
-							hello@medbankr.com
+							hello@medbankr.ai
 						</a>{" "}
-						|<span className="ml-2">+234 909 000 0000</span>
+						|<span className="ml-2">+2348085258564</span>
 					</p>
 				</motion.div>
 
@@ -56,12 +56,12 @@ const Footer: React.FC = () => {
 							<IconBrandFacebook color="white" />
 						</Link>
 						<Link
-							href="https://www.telegram.com/medbankr"
+							href="https://www.tiktok.com/@medbankr"
 							className="bg-[#3AE2AD] p-2 rounded-full shadow shadow-[#EBEBEB]">
-							<IconBrandTelegram color="white" />
+							<IconBrandTiktok color="white" />
 						</Link>
 						<Link
-							href="https://www.linkedin.com/medbankr"
+							href="https://www.linkedin.com/company/medbankr"
 							className="bg-[#3AE2AD] p-2 rounded-full shadow shadow-[#EBEBEB]">
 							<IconBrandLinkedin color="white" />
 						</Link>
@@ -86,7 +86,7 @@ const Footer: React.FC = () => {
 				/>
 				<div className="mt-8 text-center text-gray-400 flex flex-col sm:flex-row justify-between items-center">
 					<p className="text-white font-normal font-sequel">
-						&copy; 2023 Medbankr. All rights reserved.
+						&copy; 2025 Medbankr. All rights reserved.
 					</p>
 					<p className="text-white font-normal font-sequel">
 						Proudly built in Nigeria
