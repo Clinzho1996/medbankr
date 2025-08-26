@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import EarlyAccessForm from "./EarlyAccessForm";
 import Modal from "./Modal";
 
-// ✅ Custom hook for native speech synthesis
+// ✅ Custom hook for native speech synthesis with natural voice
 function useSpeechSynthesisNative() {
 	const synthRef = useRef<SpeechSynthesis | null>(null);
 	const [speaking, setSpeaking] = useState(false);
@@ -19,15 +19,32 @@ function useSpeechSynthesisNative() {
 	const speak = useCallback((text: string) => {
 		if (!synthRef.current) return;
 
-		// Cancel any ongoing speech
 		synthRef.current.cancel();
 
 		const utterance = new SpeechSynthesisUtterance(text);
+
+		// Try different voices and settings
+		const voices = synthRef.current.getVoices();
+		const preferredVoice = voices.find(
+			(voice) =>
+				voice.name.includes("Google") ||
+				voice.name.includes("Samantha") ||
+				voice.name.includes("Karen") ||
+				voice.lang.includes("en-GB")
+		);
+
+		if (preferredVoice) {
+			utterance.voice = preferredVoice;
+		}
+
+		utterance.rate = 0.85; // Slower for more natural sound
+		utterance.pitch = 1.1; // Slightly higher pitch
+		utterance.volume = 0.8;
+
 		utterance.onstart = () => setSpeaking(true);
 		utterance.onend = () => setSpeaking(false);
 		utterance.onerror = () => setSpeaking(false);
 
-		// Add a small delay to work around autoplay restrictions
 		setTimeout(() => {
 			if (synthRef.current) {
 				synthRef.current.speak(utterance);
@@ -164,9 +181,9 @@ export const AIVoicePrompt = () => {
 
 	const responses = {
 		"Feeling great":
-			"That's wonderful to hear! Keep it up, and remember, prevention is better than cure.",
+			"That's wonderful to hear! Keep it up, and remember — prevention is better than cure.",
 		"A bit off":
-			"Thanks for sharing. Sometimes, it helps to track how you feel over time — we're working on something to help with that.",
+			"Thanks for sharing. Sometimes, it helps to track how you feel over time. We're working on something to help with that.",
 		"Not feeling well":
 			"I'm sorry you're feeling that way. I'd love to help, but I'm still learning. I'll be here for you when we launch!",
 		"Confused about my symptoms":
@@ -195,16 +212,13 @@ export const AIVoicePrompt = () => {
 
 	useEffect(() => {
 		const handleScroll = () => {
-			if (window.scrollY > 300 && !scrollTriggered.current && userInteracted) {
+			if (window.scrollY > 300 && !scrollTriggered.current) {
 				scrollTriggered.current = true;
 				setShowPrompt(true);
 
 				cancel();
-				if (!hasSpoken.current) {
-					// Only speak if user has interacted with the page
-					if (userInteracted) {
-						speak("Hi there! How are you feeling today?");
-					}
+				if (!hasSpoken.current && userInteracted) {
+					speak("Hi there! How are you feeling today?");
 					hasSpoken.current = true;
 				}
 			}

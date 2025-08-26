@@ -40,13 +40,16 @@ export default function EarlyAccessForm() {
 		};
 
 		try {
-			const response = await fetch("/v1/waitlist/user", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(payload),
-			});
+			const response = await fetch(
+				"https://api.medbankr.ai/api/v1/waitlist/user",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(payload),
+				}
+			);
 
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);

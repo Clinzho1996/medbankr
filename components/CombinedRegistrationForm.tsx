@@ -60,7 +60,7 @@ export default function CombinedRegistrationForm() {
 					hospital_address: data.hospitalAddress,
 					specialization: data.specialization,
 				};
-				endpoint = "/v1/waitlist/hospital";
+				endpoint = "https://api.medbankr.ai/api/v1/waitlist/hospital";
 			} else if (data.type === "diagnostic") {
 				// Diagnostic center payload
 				payload = {
@@ -72,7 +72,7 @@ export default function CombinedRegistrationForm() {
 					lab_address: data.labAddress,
 					specialization: data.specialization,
 				};
-				endpoint = "/v1/waitlist/diagnostic";
+				endpoint = "https://api.medbankr.ai/api/v1/waitlist/diagnostic";
 			} else {
 				throw new Error("Please select a facility type");
 			}
