@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { ChangeEvent, FormEvent, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 type FormData = {
 	name: string;
@@ -16,6 +17,7 @@ export default function EarlyAccessForm() {
 		phone: "",
 		location: "",
 	});
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -25,13 +27,79 @@ export default function EarlyAccessForm() {
 		}));
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		alert("submitted (dummy)");
+		setIsLoading(true);
+
+		// Prepare the payload according to the required format
+		const payload = {
+			full_name: data.name,
+			designation: data.location || "no-context",
+			phone: data.phone,
+			email: data.email,
+		};
+
+		try {
+			const response = await fetch("/v1/waitlist/user", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(payload),
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+
+			const result = await response.json();
+			console.log("Success:", result);
+
+			// Show success toast
+			toast.success("Successfully submitted! You'll get early access soon.");
+
+			// Reset form
+			setData({
+				name: "",
+				email: "",
+				phone: "",
+				location: "",
+			});
+		} catch (error) {
+			console.error("Submission error:", error);
+			toast.error("Failed to submit. Please try again.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
 		<div className="p-4 bg-white">
+			<Toaster
+				position="top-center"
+				toastOptions={{
+					duration: 4000,
+					style: {
+						background: "#363636",
+						color: "#fff",
+					},
+					success: {
+						duration: 3000,
+						iconTheme: {
+							primary: "#3BE2AD",
+							secondary: "#fff",
+						},
+					},
+					error: {
+						duration: 4000,
+						iconTheme: {
+							primary: "#ff4d4f",
+							secondary: "#fff",
+						},
+					},
+				}}
+			/>
+
 			<div className="rounded-xl p-4 bg-[#EFF1F5] w-full text-center border border-[#E2E4E9]">
 				<div className="bg-white p-6 rounded-lg">
 					<div className="mx-auto">
@@ -55,6 +123,7 @@ export default function EarlyAccessForm() {
 							name="name"
 							value={data.name}
 							onChange={handleChange}
+							required
 							className="w-full rounded-lg px-3 py-2 bg-[#F4F6F8] shadow-inner shadow-[#0000000D] text-sm mt-2"
 							placeholder="Williams Ayedungbe"
 						/>
@@ -62,8 +131,10 @@ export default function EarlyAccessForm() {
 						<label className="text-sm text-gray-600">Email Address</label>
 						<input
 							name="email"
+							type="email"
 							value={data.email}
 							onChange={handleChange}
+							required
 							className="w-full rounded-lg px-3 py-2 bg-[#F4F6F8] shadow-inner shadow-[#0000000D] text-sm mt-2"
 							placeholder="williams@medbankr.com"
 						/>
@@ -73,6 +144,7 @@ export default function EarlyAccessForm() {
 							name="phone"
 							value={data.phone}
 							onChange={handleChange}
+							required
 							className="w-full rounded-lg px-3 py-2 bg-[#F4F6F8] shadow-inner shadow-[#0000000D] text-sm mt-2"
 							placeholder="Enter phone number"
 						/>
@@ -88,8 +160,9 @@ export default function EarlyAccessForm() {
 
 						<button
 							type="submit"
-							className="mt-2 w-full rounded-full py-3 bg-gradient-to-b from-[#3BE2AD] to-[#3BE2AD] text-black font-normal font-sequel">
-							Get Early Access
+							disabled={isLoading}
+							className="mt-2 w-full rounded-full py-3 bg-gradient-to-b from-[#3BE2AD] to-[#3BE2AD] text-black font-normal font-sequel disabled:opacity-50 disabled:cursor-not-allowed">
+							{isLoading ? "Submitting..." : "Get Early Access"}
 						</button>
 					</form>
 				</div>
