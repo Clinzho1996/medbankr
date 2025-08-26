@@ -76,7 +76,7 @@ export default function EarlyAccessForm() {
 	return (
 		<div className="p-4 bg-white">
 			<Toaster
-				position="top-center"
+				position="top-right"
 				toastOptions={{
 					duration: 4000,
 					style: {
