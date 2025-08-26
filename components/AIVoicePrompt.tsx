@@ -18,11 +18,21 @@ function useSpeechSynthesisNative() {
 
 	const speak = useCallback((text: string) => {
 		if (!synthRef.current) return;
+
+		// Cancel any ongoing speech
 		synthRef.current.cancel();
+
 		const utterance = new SpeechSynthesisUtterance(text);
 		utterance.onstart = () => setSpeaking(true);
 		utterance.onend = () => setSpeaking(false);
-		synthRef.current.speak(utterance);
+		utterance.onerror = () => setSpeaking(false);
+
+		// Add a small delay to work around autoplay restrictions
+		setTimeout(() => {
+			if (synthRef.current) {
+				synthRef.current.speak(utterance);
+			}
+		}, 100);
 	}, []);
 
 	const cancel = useCallback(() => {
@@ -147,6 +157,7 @@ const AIResponse = ({
 export const AIVoicePrompt = () => {
 	const [showPrompt, setShowPrompt] = useState(false);
 	const [selectedMood, setSelectedMood] = useState<string | null>(null);
+	const [userInteracted, setUserInteracted] = useState(false);
 	const { speak, speaking, cancel } = useSpeechSynthesisNative();
 	const hasSpoken = useRef(false);
 	const scrollTriggered = useRef(false);
@@ -162,15 +173,38 @@ export const AIVoicePrompt = () => {
 			"It can be overwhelming sometimes. But you're not alone. I'll be ready soon to help you make sense of your symptoms.",
 	};
 
+	// Add user interaction detection
+	useEffect(() => {
+		const handleUserInteraction = () => {
+			setUserInteracted(true);
+			window.removeEventListener("click", handleUserInteraction);
+			window.removeEventListener("touchstart", handleUserInteraction);
+			window.removeEventListener("keydown", handleUserInteraction);
+		};
+
+		window.addEventListener("click", handleUserInteraction);
+		window.addEventListener("touchstart", handleUserInteraction);
+		window.addEventListener("keydown", handleUserInteraction);
+
+		return () => {
+			window.removeEventListener("click", handleUserInteraction);
+			window.removeEventListener("touchstart", handleUserInteraction);
+			window.removeEventListener("keydown", handleUserInteraction);
+		};
+	}, []);
+
 	useEffect(() => {
 		const handleScroll = () => {
-			if (window.scrollY > 300 && !scrollTriggered.current) {
+			if (window.scrollY > 300 && !scrollTriggered.current && userInteracted) {
 				scrollTriggered.current = true;
 				setShowPrompt(true);
 
 				cancel();
 				if (!hasSpoken.current) {
-					speak("Hi there! How are you feeling today?");
+					// Only speak if user has interacted with the page
+					if (userInteracted) {
+						speak("Hi there! How are you feeling today?");
+					}
 					hasSpoken.current = true;
 				}
 			}
@@ -181,7 +215,7 @@ export const AIVoicePrompt = () => {
 			window.removeEventListener("scroll", handleScroll);
 			cancel();
 		};
-	}, [speak, cancel]);
+	}, [speak, cancel, userInteracted]);
 
 	const handleMoodSelect = (mood: string) => {
 		setSelectedMood(mood);
@@ -207,8 +241,11 @@ export const AIVoicePrompt = () => {
 				/>
 			)}
 			{speaking && (
-				<div className="absolute top-2 right-2 animate-pulse">
-					<svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+				<div className="fixed top-4 right-4 w-6 h-6 bg-[#38E1AC] rounded-full flex items-center justify-center animate-pulse z-50">
+					<svg
+						className="w-3 h-3 text-white"
+						fill="currentColor"
+						viewBox="0 0 20 20">
 						<path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
 						<path
 							fillRule="evenodd"
