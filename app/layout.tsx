@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { sequelFont } from "./fonts";
@@ -14,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "MedBankr",
+	title: "MedBankr AI",
 	description: "Your AI Health Companion – Smarter Care, Fewer Worries",
 	icons: {
 		icon: "/images/favicon.ico",
@@ -32,6 +33,7 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} ${sequelFont.variable} antialiased`}>
 				{children}
+				<Analytics />
 			</body>
 		</html>
 	);
