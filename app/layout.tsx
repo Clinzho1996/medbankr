@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
 	title: "MedBankr AI",
-	description: "Your AI Health Companion – Smarter Care, Fewer Worries",
+	description: "Your AI Health Companion – Smarter Care, Fewer Worries.",
 	icons: {
 		icon: "/images/favicon.ico",
 		apple: "/images/favicon.ico",
