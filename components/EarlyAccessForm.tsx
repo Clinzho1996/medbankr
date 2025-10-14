@@ -114,11 +114,11 @@ export default function EarlyAccessForm() {
 							className="w-full h-full"
 						/>
 					</div>
-					<h2 className="text-xl font-normal font-sequel mt-3">
-						Be Among Our First Users
+					<h2 className="text-lg font-normal font-sequel mt-3">
+						The smartest way to manage your health.
 					</h2>
 					<p className="text-[#6C7278] text-sm mb-4">
-						Get 6 months premium FREE + exclusive founding member benefits
+						Get 6 months premium FREE + exclusive insider benefits.
 					</p>
 					<form onSubmit={handleSubmit} className="space-y-3 text-left">
 						<label className="text-sm text-gray-600">Full Name</label>
