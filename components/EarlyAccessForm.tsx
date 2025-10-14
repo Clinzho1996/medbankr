@@ -115,7 +115,7 @@ export default function EarlyAccessForm() {
 						/>
 					</div>
 					<h2 className="text-lg font-normal font-sequel mt-3">
-						The smartest way to manage your health.
+						The smartest way to manage your health
 					</h2>
 					<p className="text-[#6C7278] text-sm mb-4">
 						Get 6 months premium FREE + exclusive insider benefits.
