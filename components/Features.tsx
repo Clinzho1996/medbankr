@@ -42,9 +42,7 @@ const FeaturesGrid: React.FC = () => {
 					<h2 className="text-3xl font-normal text-left font-sequel text-gray-900">
 						Medbankr – Your Smarter Health Companion
 					</h2>
-					<p className="text-gray-600">
-						What we offer:
-					</p>
+					<p className="text-gray-600">What you get with Medbankr</p>
 				</motion.div>
 
 				<div className="gap-3 bg-gradient-to-b from-[#3AE2AD] to-[#173C3D] p-3 rounded-lg">
@@ -59,7 +57,7 @@ const FeaturesGrid: React.FC = () => {
 						/>
 						<FeatureCard
 							title="Intelligent Symptom Checker"
-							description="Get instant insights into your symptoms and potential conditions."
+							description="Get instant insights into your symptoms and what might be going on."
 							img="/images/symptoms.png"
 							className="h-full min-h-[400px] md:h-[510px]"
 							delay={0.2}
@@ -77,7 +75,7 @@ const FeaturesGrid: React.FC = () => {
 					<div className="flex flex-col sm:flex-row gap-3 w-full">
 						<div className="w-full sm:w-[66.5%]">
 							<FeatureCard
-								title="Specialist Connection"
+								title="Smart Specialist Matching"
 								description="Connect with top healthcare specialists when you need them."
 								img="/images/specialist.png"
 								className="h-full min-h-[280px] md:h-[350px]"

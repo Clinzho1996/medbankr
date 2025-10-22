@@ -60,16 +60,16 @@ const Hero: React.FC<{ openModal?: () => void }> = ({ openModal }) => {
 			<motion.h1
 				variants={item}
 				className="text-4xl md:text-[68px] font-bold text-gray-900 mb-4 font-sequel leading-[48px] md:leading-[80px] mt-6 md:mt-0">
-				Your AI Health Companion – Smarter Care, Fewer Worries
+				Your AI Health Companion
 			</motion.h1>
 
 			{/* Subheading */}
 			<motion.p
 				variants={item}
 				className="mb-8 font-sequel font-normal text-[#6C7278] w-full text-sm md:text-base px-2 sm:w-[90%] md:w-[60%] mx-auto">
-				Nigeria&apos;s first AI-powered health vault that stores your records,
-				checks symptoms, tracks meds, and connects you to top specialists – all
-				in one place
+				Nigeria&apos;s first AI-powered health vault. Store your records, check
+				symptoms, track your medications, and get connected to trusted
+				specialists — all in one place.
 			</motion.p>
 
 			{/* Buttons row */}

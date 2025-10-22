@@ -54,7 +54,7 @@ const ProviderSection: React.FC = () => {
 							<button
 								className="mt-4 bg-[#38E1AC] text-black font-normal font-sequel py-3 px-6 rounded-full hover:bg-gray-200 transition-colors w-fit shadow-lg shadow-[#38E1AC33]"
 								onClick={() => setOpen(true)}>
-								Get Early Access
+								Join Now
 							</button>
 						</div>
 					</motion.div>
