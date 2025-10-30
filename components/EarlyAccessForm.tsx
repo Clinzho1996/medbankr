@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -11,6 +12,7 @@ type FormData = {
 };
 
 export default function EarlyAccessForm() {
+	const router = useRouter();
 	const [data, setData] = useState<FormData>({
 		name: "",
 		email: "",
@@ -59,7 +61,7 @@ export default function EarlyAccessForm() {
 			console.log("Success:", result);
 
 			// Show success toast
-			toast.success("Successfully submitted! You'll get early access soon.");
+			router.push("/success");
 
 			// Reset form
 			setData({

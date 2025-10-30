@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
@@ -17,6 +18,7 @@ type FormData = {
 };
 
 export default function CombinedRegistrationForm() {
+	const router = useRouter();
 	const [data, setData] = useState<FormData>({
 		name: "",
 		designation: "",
@@ -94,11 +96,7 @@ export default function CombinedRegistrationForm() {
 			console.log("Success:", result);
 
 			// Show success toast
-			toast.success(
-				data.type === "hospital"
-					? "Hospital registration successful!"
-					: "Diagnostic center registration successful!"
-			);
+			router.push("/success");
 
 			// Reset form
 			setData({
