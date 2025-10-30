@@ -17,7 +17,8 @@ function FormSuccess() {
 				Successfully submitted!
 			</p>
 			<p className="text-xs text-[#6B7280] font-inter font-light  text-center">
-				Thank you for signing up for our Waitlist! You'll get early access soon.
+				Thank you for signing up for our Waitlist! You&apos;ll get early access
+				soon.
 			</p>
 			<button
 				className="bg-[#38E1AC] flex flex-row justify-center items-center gap-1 text-primary py-3 px-10 rounded-lg mt-4 w-fit cursor-pointer"
